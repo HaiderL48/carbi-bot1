@@ -13,7 +13,7 @@ const messages = [
   },
 ];
 
-export async function chat(userText) {
+export default async function chat(userText) {
   messages.push({
     role: "user",
     content: userText,

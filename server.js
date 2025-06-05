@@ -4,7 +4,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { chat } from "demo.js";
+
+import chat from "./demo.js";
 dotenv.config();
 const app = express();
 const PORT = 3000;
