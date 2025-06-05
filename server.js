@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
+import { chat } from "demo.js";
 dotenv.config();
 const app = express();
 const PORT = 3000;
@@ -16,6 +16,14 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 app.get("/", (req, res) => {
   console.log("sucess");
 });
+
+app.post("/bot", async (req, res) => {
+  const userText = req.body.message;
+
+  const response = await chat(userText);
+  res.json(response);
+});
+
 app.post("/chat", async (req, res) => {
   const message = req.body.message;
 
