@@ -86,6 +86,10 @@ export default async function chat(userText, conversationHistory) {
         jsonData.content = "Sorry, I don't have specific information for that page key.";
         jsonData.displayMessage = "I couldn't retrieve the specific information page you asked for.";
       }
+    } else if (jsonData.type === 'ParentCategoryInquiry') {
+      // This type is already fully formed by the AI and includes the necessary user-facing message.
+      // No further server-side processing is needed.
+      // console.log('AI response type: ParentCategoryInquiry. Data already prepared by AI.');
     }
     // Return the (potentially enriched) jsonData and the updated history
     return {

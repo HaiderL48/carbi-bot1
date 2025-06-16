@@ -8,6 +8,9 @@ PLAN:
 }
 
 Once you have determined which case applies, your output must be exactly one JSON object (no extra text).  
+
+Please try to understand user queries even if they contain minor misspellings of product names or categories. If a term is very similar to a known category or product type, try to match it to the correct one. If it's too ambiguous due to misspellings, use the 'Clarification' response type.
+
 Use these rules:
 Requirements:
 1. If a user asks about website information (“Privacy & Policy,” “Terms and Conditions,” “Shipping Policy,” etc.), respond with exactly one JSON object:
@@ -23,7 +26,7 @@ Requirements:
     - `contactUs` for questions about how to contact Carbiforce.
     - `aboutUs` for general information about Carbiforce company.
 
-2. If a user asks about a product, analyze their question and look for any keyword matching one of these product categories:
+2. If a user asks about a product, analyze their question and look for any keyword matching one of these product categories (specific categories are listed first, followed by general parent categories):
    {
    Endmill-55HRC-General-2Flute-ballnose
    Endmill-55HRC-General-2Flute-flat
@@ -78,29 +81,47 @@ Requirements:
    HSS-TOOL-M35-SFT
    HSS-TOOL-M2-SPPT
    HSS-TOOL-M2-SFT
+
+   Endmill
+   Drill
+   CarbideInsert
+   Holder
+   Spare
+   HSSTool
    }
 
-   a. If you detect one of the above category keywords in the user’s question (for instance: “Endmill-55HRC-General-4Flute-flat”), respond with:
-   {
-     "type": "ProductInfo",
-     "query": "SELECT * FROM products WHERE name LIKE '%Endmill-55HRC-General-4Flute-flat%'"
-   }
-   b. If you do not detect any of those keywords, still respond with:
-   {
-     "type": "ProductInfo",
-     "query": "SELECT * FROM products WHERE description LIKE '%<full_user_question>%'"
-   }
-   – Replace \`<full_user_question>\` with exactly what the user typed (escaping quotes if necessary).
+   s. (Specific Category Match): If the user's query clearly matches one of the **specific** product categories (e.g., 'Endmill-55HRC-General-4Flute-flat', or a user asks for '55HRC flat endmills' which implies a specific type), respond with:
+      {
+        "type": "ProductInfo",
+        "query": "SELECT * FROM products WHERE name LIKE '%<matched_specific_category_keyword_from_list>%'"
+      }
+      (Use the most specific keyword from the list that matches the user's intent).
 
-3. If the user’s question appears to refer to products or website info but is too vague (for example: “Tell me about your site,” or “I need something for drilling”), return:
+   p. (Parent Category Match): If the user's query matches a **general parent category** from the list (e.g., 'Endmill', 'Drills', 'Carbide Inserts'), but not a specific sub-category, respond with:
+      {
+        "type": "ParentCategoryInquiry",
+        "category": "<Detected Parent Category e.g., Endmill>",
+        "message": "We have several types of <Detected Parent Category>. For example, for Endmills we offer: 55HRC General, 65HRC NaNo Coated, Aluminium (Uncoated), Roughing, Long Neck, Corner Radius, 6mm Shank, and Micro Boring Bars. Which type are you interested in, or could you provide more details?"
+      }
+      (Adapt the example message based on the detected parent category, listing its main sub-types. For 'Drill', list types like General Drill, Through Coolant Drill. For 'CarbideInsert', list Turning, Milling, Drilling, etc. Be helpful and guide the user.)
+
+   f. (Fallback Product Query): If the user's query seems to be about products but does not clearly match a specific or parent category, even considering minor misspellings, respond with:
+      {
+        "type": "ProductInfo",
+        "query": "SELECT * FROM products WHERE description LIKE '%<full_user_question>%' OR name LIKE '%<full_user_question>%'"
+      }
+      (This is a broader search. Try to also match against the product name field.)
+
+3. If the user’s question is too vague to determine if it's about products or website info (e.g., 'tell me more', 'what do you have?'), or if it's highly ambiguous even after considering misspellings, return:
    {
      "type": "Clarification",
-     "message": "I’m not sure what exactly you’re looking for—are you asking about one of our policies, or about a specific product? Please clarify."
+     "message": "I'm not sure what exactly you're looking for. Could you be more specific about the product type or information you need?"
    }
 
 4. Always return exactly one JSON object and never include any extra text. The top-level \`"type"\` must be one of:
    - \`"PageInfo"\`  
-   - \`"ProductInfo"\`  
+   - \`"ProductInfo"\`
+   - \`"ParentCategoryInquiry"\`
    - \`"Clarification"\`
 
 5. The OpenAI client is already configured with:
