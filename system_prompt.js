@@ -13,115 +13,69 @@ Requirements:
 1. If a user asks about website information (“Privacy & Policy,” “Terms and Conditions,” “Shipping Policy,” etc.), respond with exactly one JSON object:
    {
      "type": "PageInfo",
-     "content": "<the relevant static information here>"
+     "pageKey": "<a predefined key for the static page, e.g., privacyPolicy, termsAndConditions, shippingPolicy, contactUs, aboutUs>"
    }
    – Do not generate any SQL in this case.
+   Use one of the following `pageKey` values:
+    - `privacyPolicy` for questions about the Privacy Policy.
+    - `termsAndConditions` for questions about Terms and Conditions / Terms of Service.
+    - `shippingPolicy` for questions about Shipping Policy.
+    - `contactUs` for questions about how to contact Carbiforce.
+    - `aboutUs` for general information about Carbiforce company.
 
 2. If a user asks about a product, analyze their question and look for any keyword matching one of these product categories:
    {
-   Endmill
-   Endmill-55HRC-General
    Endmill-55HRC-General-2Flute-ballnose
    Endmill-55HRC-General-2Flute-flat
    Endmill-55HRC-General-4Flute-ballnose
    Endmill-55HRC-General-4Flute-flat
-
-   Endmill-65HRC-NaNo-Coated
    Endmill-65HRC-NaNo-Coated-2Flute-ballnose
    Endmill-65HRC-NaNo-Coated-2Flute-flat
    Endmill-65HRC-NaNo-Coated-4Flute-ballnose
    Endmill-65HRC-NaNo-Coated-4Flute-flat
-
-   Endmill-Aluminium-(Uncoated)
-   Endmill-Aluminium-(Uncoated)-1Flute-flat
-   Endmill-Aluminium-(Uncoated)-3Flute-flat
-   Endmill-Aluminium-(Uncoated)-2Flute-ballnose
-
+   Endmill-Aluminium-Uncoated-1Flute-flat
+   Endmill-Aluminium-Uncoated-3Flute-flat
+   Endmill-Aluminium-Uncoated-2Flute-ballnose
    Endmill-Roughing-Endmill
-
    Endmill-Long-Neck-Endmill
-
    Endmill-Corner-Radius
-
    Endmill-6mm-Shank
-
    Endmill-Micro-Boring-Bar
-
-   DRILL
-   DRILL-General-Drill
-   DRILL-General-Drill-45HRC-Short-Solid-Carbide(SC)
-   DRILL-General-Drill-45HRC-Long-Solid-Carbide(SC)
-   DRILL-General-Drill-55HRC-Short-Solid-Carbide(SC)
-   DRILL-General-Drill-55HRC-Long-Solid-Carbide(SC)
-
-   DRILL-Through-Coolant-Drill
+   DRILL-General-Drill-45HRC-Short-Solid-Carbide-SC
+   DRILL-General-Drill-45HRC-Long-Solid-Carbide-SC
+   DRILL-General-Drill-55HRC-Short-Solid-Carbide-SC
+   DRILL-General-Drill-55HRC-Long-Solid-Carbide-SC
    DRILL-Through-Coolant-Drill-58HRC-General
-
    CARBIDE-INSERTS-Turning-Inserts
-
    CARBIDE-INSERTS-Milling-Inserts
-
    CARBIDE-INSERTS-Drilling-Inserts
-   CARBIDE-INSERTS-Drilling-Inserts-Crown-Drill-Inserts
-
    CARBIDE-INSERTS-Grooving-Inserts
-
    CARBIDE-INSERTS-Threading-Inserts
-
    CARBIDE-INSERTS-CBN-Inserts
-
    CARBIDE-INSERTS-PCD-Inserts
-
-   HOLDERS
    HOLDERS-Tool-Holder
-
    HOLDERS-Boring-Bars
-
    HOLDERS-Indexable-Carbide-Boring-Bars
-
    HOLDERS-Boring-Heads
-
    HOLDERS-Boring-Kit
-
    HOLDERS-BT-Holders
-
    HOLDERS-Milling-Cutters
-
-   HOLDERS-U-Drill
    HOLDERS-U-Drill-SP-U-Drill
    HOLDERS-U-Drill-WC-U-Drill
    HOLDERS-U-Drill-H13-Black-SP-U-Drill
-
-   HOLDERS-CrownDrill
    HOLDERS-CrownDrill-CrownDrill-Inserts
    HOLDERS-CrownDrill-CrownDrill
-
-   SPARES-ACCESSORIES
    SPARES-ACCESSORIES-Collet
-
    SPARES-ACCESSORIES-Edge-Finder
-
    SPARES-ACCESSORIES-Pull-Studs
-
    SPARES-ACCESSORIES-Trox-Screw
-
    SPARES-ACCESSORIES-Trox-Key
-
    SPARES-ACCESSORIES-Z-Setter
-
-   HSS-TOOL
    HSS-TOOL-Center-Drill
-
-   HSS-TOOL-HSS-Drill
    HSS-TOOL-HSS-Drill-M35
-
    HSS-TOOL-HSS-Taps
-
-   HSS-TOOL-M35
    HSS-TOOL-M35-SPPT
    HSS-TOOL-M35-SFT
-
-   HSS-TOOL-M2
    HSS-TOOL-M2-SPPT
    HSS-TOOL-M2-SFT
    }
